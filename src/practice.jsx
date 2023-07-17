@@ -4,26 +4,39 @@ const books = [
     id: 0,
     name: "Atomic Habits",
     src: "https://m.media-amazon.com/images/I/41Qw7f4Bk8L._AC_UL50_.jpg",
-    price: 15
+    price: 15,
   },
   {
     id: 1,
     name: "Rich dad Poor Dad",
     src: "https://m.media-amazon.com/images/I/81BE7eeKzAL._AC_UL50_.jpg",
-    price: 20
+    price: 20,
   },
   {
     id: 2,
     name: "Do it Today",
     src: "https://m.media-amazon.com/images/I/61ePdebDa7L._AC_UL50_.jpg",
-    price: 30
-  }
+    price: 30,
+  },
 ];
 
 function Bookshelf() {
   const [items, setItems] = useState(books);
   const [cart, setCart] = useState([]);
+  const [name, setName] = useState("");
 
+  function handleName(e) {
+    setName(e.target.value);
+  }
+
+  function handleSearch(e) {
+    const newArr = items.filter((item, e) =>
+      item.name.toLowerCase().includes(name.toLowerCase())
+    );
+
+    setItems(newArr);
+    setName("");
+  }
   function handleCart(id) {
     // 1. Adding to cart
     const bookToAdd = items.find((item) => item.id === id);
@@ -56,6 +69,18 @@ function Bookshelf() {
     <div>
       <h2>My Book Store</h2>
       {items.length === 0 && <h3>No books left!</h3>}
+      <div>
+        <label htmlFor="name">Name</label>
+        <input
+          id="name"
+          placeholder="type a book"
+          value={name}
+          onChange={handleName}
+        />
+        <button onClick={handleSearch}>Search</button>
+      </div>
+      {items.length === 0 && <span>No result found</span>}
+
       <ul>
         {items.map((book) => (
           <li key={book.id}>
